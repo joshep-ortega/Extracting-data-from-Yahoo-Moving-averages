@@ -1,0 +1,10 @@
+pip install yfinance
+pip install pandas
+pip install numpy
+pip install matplotlib
+
+import yfinance as yf
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.dates import DateFormatter
