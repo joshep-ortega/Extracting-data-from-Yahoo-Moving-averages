@@ -1,1 +1,71 @@
+pip install yfinance
+pip install pandas
+pip install numpy
+pip install matplotlib
+
+import yfinance as yf
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.dates import DateFormatter
+
+APPLE = yf.download("AAPL", start="2020-01-01", end="2022-12-12", interval="1d")
+
+APPLE.head()
+
+fig, ax = plt.subplots(dpi=500)
+# Formatting the date axis
+date_format = DateFormatter("%h-%d-%y")
+ax.xaxis.set_major_formatter(date_format)
+ax.tick_params(axis='x', labelsize=8)
+fig.autofmt_xdate()
+
+# Plotting the closing price against the date (1 day interval)
+ax.plot(APPLE['Close'], lw=0.75)
+
+# Adding labels and title to the plot
+ax.set_ylabel('Price of Equities of APPLE')
+ax.set_title('The equity of Apple in USD')
+ax.grid() # adding a grid
+
+# Displaying the price chart
+plt.show()
+
+# Compute a 10-day Simple Moving Average with pandas
+APPLE['SMA_10'] = APPLE['Close'].rolling(window=10, min_periods=1).mean()
+
+# Add your code below and run the cell
+APPLE['SMA_20'] = APPLE['Close'].rolling(window=20, min_periods=1).mean()
+
+# Display the last 5 entries of the dataframe
+APPLE.tail()
+
+fig, ax = plt.subplots(dpi=500)
+
+# Formatting the date axis
+date_format = DateFormatter("%h-%d-%y")
+ax.xaxis.set_major_formatter(date_format)
+ax.tick_params(axis='x', labelsize=8)
+fig.autofmt_xdate()
+
+# Plotting the closing price against the date (1 day interval)
+ax.plot(APPLE['Close'], lw=0.75, label='Closing Price') # Added label
+
+"""
+You have already seen the code above earlier - we are simply reusing it.
+Below we plot the 10 and 20 day Simple Moving Averages and give them the appropriate label
+"""
+ax.plot(APPLE['SMA_10'], lw=0.75, alpha=0.75, label='10 Day SMA')
+ax.plot(APPLE['SMA_20'], lw=0.75, alpha=0.75, label='20 Day SMA')
+
+
+# Adding labels and title to the plot
+ax.set_ylabel('Price of Equities of APPLE')
+ax.set_title('The equity of Apple in USD')
+ax.grid() # adding a grid
+ax.legend() # adding a legend
+
+# Displaying the price chart
+plt.show()
+
 
