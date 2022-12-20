@@ -1,0 +1,72 @@
+pip install yfinance
+pip install pandas
+pip install numpy
+pip install matplotlib
+
+import yfinance as yf
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.dates import DateFormatter
+
+SP500 = yf.download("^GSPC", start="2020-01-01", end="2022-12-19", interval="1d")
+
+SP500.head()
+
+fig, ax = plt.subplots(dpi=500)
+# Formatting the date axis
+date_format = DateFormatter("%h-%d-%y")
+ax.xaxis.set_major_formatter(date_format)
+ax.tick_params(axis='x', labelsize=8)
+fig.autofmt_xdate()
+
+# Plotting the closing price against the date (1 day interval)
+ax.plot(SP500['Close'], lw=0.75)
+
+# Adding labels and title to the plot
+ax.set_ylabel('Value of the Index S&P 500')
+ax.set_title('The Index S&P 500')
+ax.grid() # adding a grid
+
+# Displaying the price chart
+plt.show()
+
+# Compute a 5-day Simple Moving Average with pandas
+SP500['SMA_5'] = SP500['Close'].rolling(window=5, min_periods=1).mean()
+
+# Compute a 10-day Simple Moving Average with pandas
+SP500['SMA_10'] = SP500['Close'].rolling(window=10, min_periods=1).mean()
+
+# Compute a 15-day Simple Moving Average with pandas
+SP500['SMA_15'] = SP500['Close'].rolling(window=15, min_periods=1).mean()
+
+# Display the last 5 entries of the dataframe
+SP500.tail()
+
+fig, ax = plt.subplots(dpi=500)
+
+# Formatting the date axis
+date_format = DateFormatter("%h-%d-%y")
+ax.xaxis.set_major_formatter(date_format)
+ax.tick_params(axis='x', labelsize=8)
+fig.autofmt_xdate()
+
+# Plotting the closing price against the date (1 day interval)
+ax.plot(SP500['Close'], lw=0.75, label='Closing Price') # Added label
+
+"""
+You have already seen the code above earlier - we are simply reusing it.
+Below we plot the 10 and 20 day Simple Moving Averages and give them the appropriate label
+"""
+ax.plot(SP500['SMA_5'], lw=0.25, alpha=0.75, label='5 Day SMA')
+ax.plot(SP500['SMA_10'], lw=0.25, alpha=0.75, label='10 Day SMA')
+ax.plot(SP500['SMA_15'], lw=0.25, alpha=0.75, label='15 Day SMA')
+
+# Adding labels and title to the plot
+ax.set_ylabel('Value of the Index S&P 500')
+ax.set_title('The Index S&P 500')
+ax.grid() # adding a grid
+ax.legend() # adding a legend
+
+# Displaying the price chart
+plt.show()
